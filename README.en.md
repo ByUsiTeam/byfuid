@@ -14,8 +14,9 @@ High-performance BYFUID generation tool that provides a command-line interface f
 Ensure you have Python 3.7 or later installed. Then install using pip:
 
 ```bash
-pip install byfuid
+pip install git+https://gitee.com/byusi/byfuid
 ```
+> GitHub `pip install git+https://github/byusiteam/byfuid`
 
 ## Usage
 
@@ -63,6 +64,20 @@ byfuid generate -c "my custom data"
 
 # Validate BYFUID length
 byfuid validate "BYFUID string"
+```
+
+## Python API
+```python
+from byfuid import generate_byfuid, validate_byfuid_length
+
+# 生成 BYFUID
+byfuid_str = generate_byfuid(
+    user_data="user12345678",
+    custom_data="订单支付成功"
+)
+
+# 验证长度
+is_valid = validate_byfuid_length(byfuid_str)
 ```
 
 ## Contributions

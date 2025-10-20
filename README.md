@@ -14,8 +14,9 @@
 请确保你已经安装了 Python 3.7 或更高版本。然后使用 pip 安装：
 
 ```bash
-pip install byfuid
+pip install git+https://gitee.com/byusi/byfuid
 ```
+> GitHub `pip install git+https://github/byusiteam/byfuid`
 
 ## 使用方法
 
@@ -63,6 +64,20 @@ byfuid generate -c "我的自定义数据"
 
 # 验证 BYFUID 长度
 byfuid validate "BYFUID字符串"
+```
+
+## Python API
+```python
+from byfuid import generate_byfuid, validate_byfuid_length
+
+# 生成 BYFUID
+byfuid_str = generate_byfuid(
+    user_data="user12345678",
+    custom_data="订单支付成功"
+)
+
+# 验证长度
+is_valid = validate_byfuid_length(byfuid_str)
 ```
 
 ## 贡献

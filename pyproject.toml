@@ -19,6 +19,11 @@ classifiers = [
     "Topic :: Security :: Cryptography",
 ]
 
+[project.urls]
+Homepage = "https://gitee.com/byusi/byfuid"
+Repository = "https://gitee.com/byusi/byfuid"
+Documentation = "https://gitee.com/byusi/byfuid/blob/master/README.md"
+
 [project.optional-dependencies]
 dev = ["pytest", "rich"]
 
