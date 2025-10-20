@@ -16,7 +16,7 @@ try:
     RICH_AVAILABLE = True
 except ImportError:
     RICH_AVAILABLE = False
-    print("错误: 请安装 rich 库: pip install rich")
+    print("错误: 请安装 rich 库: pip3 install rich")
     sys.exit(1)
 
 from byfuid import generate_byfuid, validate_byfuid_length, RUST_AVAILABLE
