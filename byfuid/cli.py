@@ -180,10 +180,10 @@ def main():
         epilog="""
 示例:
   %(prog)s generate                                 # 生成随机 BYFUID
-  %(prog)s generate -u "user12345678"              # 使用指定用户数据
+  %(prog)s generate -u "user12345678"               # 使用指定用户数据
   %(prog)s generate -c "我的自定义数据"             # 使用自定义数据
-  %(prog)s generate -u "test12345678" -c "hello"   # 使用用户数据和自定义数据
-  %(prog)s validate "BYFUID字符串"                 # 验证 BYFUID 长度
+  %(prog)s generate -u "test12345678" -c "hello"    # 使用用户数据和自定义数据
+  %(prog)s validate "BYFUID字符串"                  # 验证 BYFUID 长度
         """
     )
     
