@@ -178,6 +178,7 @@ def main():
         description="BYFUID 生成器 - 高性能 BYFUID 生成工具",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
+生成的ByFuid可能包含换行，请去除那些换行，以保证生成的ByFuid是标准的ByFuid
 示例:
   %(prog)s generate                                 # 生成随机 BYFUID
   %(prog)s generate -u "user12345678"               # 使用指定用户数据
