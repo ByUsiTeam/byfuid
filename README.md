@@ -1,4 +1,5 @@
 # BYFUID 生成器
+> Byte Y-algorithm Fused Unique Identifier
 
 高性能 BYFUID 生成工具，提供命令行接口用于生成和验证 BYFUID 字符串。
 

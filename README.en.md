@@ -1,4 +1,5 @@
 # BYFUID Generator
+> Byte Y-algorithm Fused Unique Identifier
 
 High-performance BYFUID generation tool that provides a command-line interface for generating and validating BYFUID strings.
 
