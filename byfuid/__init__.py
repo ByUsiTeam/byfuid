@@ -51,15 +51,17 @@ if not RUST_AVAILABLE:
                 raise ValueError("自定义数据必须为201字符")
             
             if custom_input:
-                if len(custom_input) > length:
-                    return custom_input[:length]
-                elif len(custom_input) < length:
+                # 去除输入中的换行符
+                cleaned_input = custom_input.replace('\n', '').replace('\r', '')
+                if len(cleaned_input) > length:
+                    return cleaned_input[:length]
+                elif len(cleaned_input) < length:
                     chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()你好世界欢迎编程开发技术数据验证安全加密"
-                    result = custom_input
+                    result = cleaned_input
                     while len(result) < length:
                         result += random.choice(chars)
                     return result
-                return custom_input
+                return cleaned_input
             else:
                 chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()你好世界欢迎编程开发技术数据验证安全加密"
                 return ''.join(random.choice(chars) for _ in range(length))
@@ -73,10 +75,17 @@ if not RUST_AVAILABLE:
                 encoded.append(encoded_char)
             return ''.join(encoded)
         
+        def remove_newlines(self, text: str) -> str:
+            """去除字符串中的所有换行符"""
+            return text.replace('\n', '').replace('\r', '')
+        
         def generate_byfuid(self, user_input: Optional[str] = None, custom_input: Optional[str] = None) -> str:
             # 用户数据
-            if user_input and len(user_input) != 12:
-                raise ValueError("用户自由数据必须为12字符")
+            if user_input:
+                # 去除用户输入中的换行符
+                user_input = self.remove_newlines(user_input)
+                if len(user_input) != 12:
+                    raise ValueError("用户自由数据必须为12字符")
             user_data = user_input or self.generate_user_data()
             
             # 自定义数据
@@ -98,12 +107,14 @@ if not RUST_AVAILABLE:
             custom_encoded = self.custom_encode(base64_encoded, timestamp)
             final_base64 = base64.b64encode(custom_encoded.encode()).decode()
             
-            # 调整长度
-            if len(final_base64) > 512:
-                return final_base64[:512]
-            elif len(final_base64) < 512:
-                return final_base64 + '+' * (512 - len(final_base64))
-            return final_base64
+            # 去除所有换行符并调整长度
+            final_byfuid = self.remove_newlines(final_base64)
+            
+            if len(final_byfuid) > 512:
+                return final_byfuid[:512]
+            elif len(final_byfuid) < 512:
+                return final_byfuid + '+' * (512 - len(final_byfuid))
+            return final_byfuid
         
         def validate_byfuid_length(self, byfuid: str) -> bool:
             return len(byfuid) == 512
@@ -121,7 +132,7 @@ def generate_byfuid(user_data: Optional[str] = None, custom_data: Optional[str] 
         custom_data: 自定义数据（可选）
         
     Returns:
-        str: 512字符的BYFUID
+        str: 512字符的BYFUID（已去除换行符）
     """
     return _generator.generate_byfuid(user_data, custom_data)
 
@@ -139,4 +150,4 @@ def validate_byfuid_length(byfuid: str) -> bool:
 
 # 导出公共API
 __all__ = ['generate_byfuid', 'validate_byfuid_length', 'RUST_AVAILABLE']
-__version__ = '0.1.0'
+__version__ = '0.1.1'

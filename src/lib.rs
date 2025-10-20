@@ -10,6 +10,13 @@ pub struct ByfuidGenerator {
     encoding_chars: String,
 }
 
+impl ByfuidGenerator {
+    /// 去除字符串中的所有换行符
+    fn remove_newlines(&self, text: &str) -> String {
+        text.replace("\n", "").replace("\r", "")
+    }
+}
+
 #[pymethods]
 impl ByfuidGenerator {
     #[new]
@@ -62,7 +69,6 @@ impl ByfuidGenerator {
         Ok(checksum[..length].to_string())
     }
 
-    //pub fn generate_custom_data(&self, custom_input: Option<String>, length: usize) -> PyResult<String>
     pub fn generate_custom_data(&self, length: usize, custom_input: Option<String>) -> PyResult<String> {
         if length != 201 {
             return Err(PyValueError::new_err("自定义数据必须为201字符"));
@@ -70,11 +76,13 @@ impl ByfuidGenerator {
 
         let custom_data = match custom_input {
             Some(input) => {
-                let input_len = input.chars().count();
+                // 去除输入中的换行符
+                let cleaned_input = self.remove_newlines(&input);
+                let input_len = cleaned_input.chars().count();
                 if input_len > length {
-                    input.chars().take(length).collect()
+                    cleaned_input.chars().take(length).collect()
                 } else if input_len < length {
-                    let mut extended = input;
+                    let mut extended = cleaned_input;
                     let mut rng = rand::thread_rng();
                     let chars: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()你好世界欢迎编程开发技术数据验证安全加密".chars().collect();
                     
@@ -84,7 +92,7 @@ impl ByfuidGenerator {
                     }
                     extended
                 } else {
-                    input
+                    cleaned_input
                 }
             }
             None => {
@@ -119,10 +127,12 @@ impl ByfuidGenerator {
     pub fn generate_byfuid(&self, user_input: Option<String>, custom_input: Option<String>) -> PyResult<String> {
         // 验证用户输入数据
         let user_data = if let Some(input) = user_input {
-            if input.chars().count() != 12 {
+            // 去除用户输入中的换行符
+            let cleaned_input = self.remove_newlines(&input);
+            if cleaned_input.chars().count() != 12 {
                 return Err(PyValueError::new_err("用户自由数据必须为12字符"));
             }
-            input
+            cleaned_input
         } else {
             self.generate_user_data(12)?
         };
@@ -147,16 +157,17 @@ impl ByfuidGenerator {
         // 自定义编码
         let custom_encoded = self.custom_encode(&base64_encoded, &timestamp);
 
-        // 最终Base64编码并调整长度
+        // 最终Base64编码并去除换行符
         let final_base64 = STANDARD.encode(custom_encoded.as_bytes());
+        let cleaned_final = self.remove_newlines(&final_base64);
         
-        let final_byfuid = if final_base64.len() > 512 {
-            final_base64[..512].to_string()
-        } else if final_base64.len() < 512 {
-            let padding_needed = 512 - final_base64.len();
-            format!("{}{}", final_base64, "+".repeat(padding_needed))
+        let final_byfuid = if cleaned_final.len() > 512 {
+            cleaned_final[..512].to_string()
+        } else if cleaned_final.len() < 512 {
+            let padding_needed = 512 - cleaned_final.len();
+            format!("{}{}", cleaned_final, "+".repeat(padding_needed))
         } else {
-            final_base64
+            cleaned_final
         };
 
         Ok(final_byfuid)
