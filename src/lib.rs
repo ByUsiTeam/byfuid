@@ -128,7 +128,7 @@ impl ByfuidGenerator {
         };
 
         // 生成自定义数据
-        let custom_data = self.generate_custom_data(custom_input, 201)?;
+        let custom_data = self.generate_custom_data(201, custom_input)?;
 
         // 生成时间戳
         let timestamp = self.generate_timestamp()?;
