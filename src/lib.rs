@@ -62,7 +62,8 @@ impl ByfuidGenerator {
         Ok(checksum[..length].to_string())
     }
 
-    pub fn generate_custom_data(&self, custom_input: Option<String>, length: usize) -> PyResult<String> {
+    //pub fn generate_custom_data(&self, custom_input: Option<String>, length: usize) -> PyResult<String>
+    pub fn generate_custom_data(&self, length: usize, custom_input: Option<String>) -> PyResult<String> {
         if length != 201 {
             return Err(PyValueError::new_err("自定义数据必须为201字符"));
         }

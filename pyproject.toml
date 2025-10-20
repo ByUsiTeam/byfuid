@@ -27,3 +27,6 @@ byfuid = "byfuid.cli:main"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module", "abi3-py37"] }
