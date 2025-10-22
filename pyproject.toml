@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "byfuid"
-version = "0.1.2"
+version = "0.1.1"
 description = "High-performance BYFUID generator with Rust backend"
 authors = [{name = "北啊呢", email = "177828525@qq.com"}]
 license = {text = "MIT"}
